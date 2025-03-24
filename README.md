@@ -136,7 +136,7 @@ postgresql:
     database: strapi
 ```
 
-- Iniciand o Helm:
+## 7. Iniciando o Helm e o Cluster:
 ```
 cd ../
 helm install foodadvisor-chart ./foodadvisor-chart/ -f ./foodadvisor-chart/.secret-values.yaml
