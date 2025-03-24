@@ -1,0 +1,97 @@
+backend:
+  replicaCount: 1
+  applicationName: foodadvisor-backend 
+
+  image:
+    repository: foodadvisor-api
+    pullPolicy: IfNotPresent
+    tag: "latest"
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 2
+
+  service:
+    type: ClusterIP
+    port: 1337
+    targetPort: 1337
+
+  ingress:
+    enabled: true
+    className: "nginx"
+    annotations: {}
+    hosts:
+      - host: foodadvisor.backend
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: foodadvisor-backend
+                port:
+                  number: 1337    
+  extraEnvs:
+    - name: DATABASE_CLIENT
+      value: postgres
+    - name: DATABASE_HOST
+      value: postgres-service
+    - name: DATABASE_PORT
+      value: 5432
+    - name: DATABASE_NAME
+      secretName: db-secret
+      secretKey: db-name
+    - name: DATABASE_USERNAME
+      secretName: db-secret
+      secretKey: db-user
+    - name: DATABASE_PASSWORD
+      secretName: db-secret
+      secretKey: db-pass
+ 
+frontend:
+  replicaCount: 1
+  applicationName: foodadvisor-frontend 
+
+  image:
+    repository: foodadvisor-client
+    pullPolicy: IfNotPresent
+    tag: "latest"
+
+  service:
+    type: ClusterIP
+    port: 3000
+
+  ingress:
+    enabled: true
+    className: "nginx"
+    annotations: {}
+    hosts:
+      - host: foodadvisor.client
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: foodadvisor-frontend
+                port:
+                  number: 3000
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 3
+
+
+postgresql:
+  image:
+    tag: "16.0.0"
+  fullnameOverride: postgres-service
+  #//
+  #//
+  ## Auth: Credenciais do banco deverão ser definidas no arquivo .secret-values
+  ## Descomentar linhas abaixo caso queira definir as credenciais aqui mesmo
+  #auth:
+    #enablePostgresUser: true
+    #postgresPassword: postgres
+    #username: strapi
+    #password: strapi
+    #database: strapi
