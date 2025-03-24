@@ -103,10 +103,26 @@ cd ./foodadvisor-chart
 helm dependency update
 ```
 
+Obs: No arquivo (`.secret-values.yaml`) é definido as variaveis ambientes para secret do Backend e do Postgres
+- secret-values.yaml:
+```
+backend:
+  secretName: db-secret
+  dbName: strapi
+  dbUser: strapi
+  dbPass: strapi
+
+postgresql:
+  auth:
+    enablePostgresUser: true
+    postgresPassword: postgres
+    username: strapi
+    password: strapi
+    database: strapi
+```
+
 - Iniciand o Helm:
 ```
 cd ../
 helm install foodadvisor-chart ./foodadvisor-chart/ -f ./foodadvisor-chart/.secret-values.yaml
 ```
-
-
