@@ -3,6 +3,21 @@
 Neste projeto será implementado o FoodAdvisor/Strapi usando Postgres
 Será utilizado o HelmChart para as configurações do Kubernetes
 
+Os recursos do Kubernetes utilizados no projeto foram:
+
+- Para o Cluster Kubernetes:
+  - Minikube
+  
+- Para o Strapi:
+  - Dois pods: um para api e outro para o client 
+  - Dois serviços: um para api e outro para o client 
+  - Um secret para guardar as credenciais de conexão da api com o banco
+  - Dois deployment: um para api e outro para o client 
+  - Dois ingress: um para api e outro para o client
+- Para o PostgreSQL:
+  - Foi utilizado o chart pronto disponivel no repósitorio da Bitnami
+  - Versão do Postgres utilizado: 16.0.0
+
 ## 1. Clonar o Repositório do foodadvisor
 ```
 git clone https://github.com/strapi/foodadvisor.git
